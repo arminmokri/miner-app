@@ -20,7 +20,6 @@ if (!isset($_SERVER['PHP_AUTH_USER'])) {
 	session_start();
 	$web_username = GetConfigVariable("web_username");
 	$web_password = GetConfigVariable("web_password");
-	exit;
 	if($_SERVER['PHP_AUTH_USER'] == $web_username && $_SERVER['PHP_AUTH_PW'] == $web_password){
 		$_SESSION['logged_in_user'] = $_SERVER['PHP_AUTH_USER'];
 	} else{

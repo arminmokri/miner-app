@@ -12,6 +12,7 @@ GOOGLE: https://drive.google.com/open?id=0B69wv2iqszefdFZUV2toUG5HdlU
 
 FEATURES:
 
+- Supports applying optimized memory timings (straps) on-the-fly in Windows, without flashing VBIOS (currently Polaris, Vega, Nvidia 10xx cards only), up to 20% speedup. Best straps for Ethereum are included.
 - Supports new "dual mining" mode: mining both Ethereum and Decred/Siacoin/Lbry/Pascal/Blake2s/Keccak at the same time, with no impact on Ethereum mining speed. Ethereum-only mining mode is supported as well.
 - Effective Ethereum mining speed is higher by 3-5% because of a completely different miner code - much less invalid and outdated shares, higher GPU load, optimized OpenCL code, optimized assembler kernels.
 - Supports both AMD and nVidia cards, even mixed.
@@ -155,8 +156,10 @@ COMMAND LINE OPTIONS:
 	"-r 1" closes miner and execute "reboot.bat" file ("reboot.bash" or "reboot.sh" for Linux version) in the miner directory (if exists) if some GPU failed. 
 	So you can create "reboot.bat" file and perform some actions, for example, reboot system if you put this line there: "shutdown /r /t 5 /f".
 
--minspeed	minimal speed for ETH, in MH/s. If miner cannot reach this speed for 5 minutes for any reason, miner will be restarted (or "reboot.bat" will be executed if "-r 1" is set). Default value is 0 (feature disabled).
+-minspeed	minimal speed for ETH, in MH/s. If miner cannot reach this speed for 5 minutes for any reason (you can change this timeout with "-minspeedtime" option), miner will be restarted (or "reboot.bat" will be executed if "-r 1" is set). Default value is 0 (feature disabled).
 	You can also specify negative values if you don't want to restart miner due to pool connection issues; for example, "-minspeed -50" will restart miner only if it cannot reach 50Mh/s at good pool connection.
+
+-minspeedtime	timeout for "-minspeed" option, in minutes. Default value is "5".
 
 -retrydelay	delay, in seconds, between connection attempts. Default values is "20". Specify "-retrydelay -1" if you don't need reconnection, in this mode miner will exit if connection is lost.
 
@@ -273,6 +276,43 @@ COMMAND LINE OPTIONS:
 
 -showdiff	use "-showdiff 1" to show difficulty for every ETH share and to display maximal found share difficulty when you press "s" key. Default value is "0".
 
+-showpower	displays statistics about GPU power consumption when you press "s" key. Default value is "1" (show statistics about power consumption), use "-showpower 0" to hide it.
+
+-driver	installs or uninstalls the driver which is required to apply memory timings (straps), enables or disables Windows Test Mode if necessary and closes miner after it. This option is available for Windows only and requires admin rights to execute. Miner can use signed or unsigned driver, unsigned driver requires Windows Test Mode (also you need to disable "Secure Boot" in UEFI BIOS).
+	Use "-driver install" to install signed driver. 
+	Use "-driver install_test" to install unsigned driver and enable Windows Test Mode, you need to reboot to apply it.
+	Use "-driver uninstall" to uninstall the driver and disable Windows Test Mode.
+	This option is necessary only if you want to install or uninstall the driver separately, miner anyway installs signed driver automatically if "-strap" option is used.
+
+-strap	applies specified memory timings (strap). This option is available for Windows only and requires AMD blockchain drivers or drivers 18.x or newer (most tests were performed on 19.4.3) for AMD cards, any recent Nvidia drivers for Nvidia cards. 
+	Currently Polaris, Vega and Nvidia 10xx cards are supported, support for other cards will be added later. 
+	Miner has built-in straps database, all straps are separated by memory (4GB or 8GB) and memory type (Samsung, Elpida, Hynix, Micron). 
+	Straps are sorted by intensity, i.e. "-strap 1" supports higher memory clock than "-strap 2", etc. For the best hashrate you must also set high memory clock, so "-strap 1" is a good start point for tests.
+	You can specify just strap index, for example "-strap 1" will apply first strap from database for all Polaris GPUs based on GPU memory size and memory type, miner will show full strap name detected.
+	Or you can specify strap directly in format "POL8S1": "POL" means Polaris, "8" means 8GB, "S" means Samsung memory, "1" means index.
+	Zero index means default strap from VBIOS, i.e. no strap is applied.
+	You can also use "@" character after strap to specify memory clock, it works like "-mclock" but overrides it, for example, "-strap POL4E2@1900". For Nvidia you can also specify delta, for example, "-strap 2@+700".
+	You can also specify values for every card, for example "-strap 1@2100,POL4H3,0".
+	If strap is applied, miner will return old strap and memory clock when miner is closed.
+	The best approach to find best strap is to set "-strap 1,0" (it sets strap #1 for first card and no straps for the rest of GPUs) and then raise memory clock to see what clocks and hashrate you can reach. 
+	Then so the same for strap #2 etc.
+	You can also specify raw strap string (96 characters). Note that single option value means that this strap is applied for all GPUs, use "0" to apply strap on single GPU, 
+	for example "-strap 0,1@2200,0" applies strap #1 and memory clock 2200MHz for second GPU only.
+	NOTE: if specified strap fails, Windows is crashed. After reboot default timings are restored and you can try some different settings.
+	NOTE: Polaris cards have different number of straps (depends on memory type and size). 
+	Vega cards have "-strap 1" ... "-strap 5" values. 
+	Nvidia cards have "-strap 1" ... "-strap 6" values (1...3 are normal straps and 4...6 are low-intensity straps).
+
+-sintensity	strap intensity for Nvidia cards, in %. Use this option to adjust strap intensity for Nvidia cards if even straps with lowest intensity ("-strap 1" and "-strap 4") are unstable on your cards. 
+	To find best value, use "-strap 4 -sintensity 1" and see if it is stable. Then increase "-sintensity" value (maximum value is 100) to find best stable hashrate. Then try other "-strap" values.
+	You can also specify values for every card, for example "-sintensity 10,0,100,30".
+	Default value is "0" which means no changes in default strap settings.
+
+-rxboost	enables additional boost for AMD Polaris cards and old AMD cards (Hawaii, Tonga, Tahiti, Pitcairn). This option is available for Windows only. It mproves hashrate up to 5% by applying some additional memory settings. 
+	To enable it, use "-rxboost 1", you can use your own straps or use "-strap" option, you will get boost anyway. If your card is unstable, you can specify custome boost value (2..100), for example, "-rxboost 5".
+	You can also specify values for every card, for example "-rxboost 1,0,10,30".
+	Default value is "0" which means no boost at all.
+
 
 
 CONFIGURATION FILE
@@ -287,6 +327,36 @@ You can also use environment variables in "epools.txt" and "config.txt" files. F
 
 
 SAMPLE USAGE
+
+Ethereum-only mining:
+
+ ethermine:
+	EthDcrMiner64.exe -epool ssl://eu1.ethermine.org:5555 -ewal 0xD69af2A796A737A103F12d2f0BCC563a13900E6F -epsw x
+
+ ethpool:
+	EthDcrMiner64.exe -epool us1.ethpool.org:3333 -ewal 0xD69af2A796A737A103F12d2f0BCC563a13900E6F -epsw x
+
+ sparkpool:
+	EthDcrMiner64.exe -epool eu.sparkpool.com:3333 -ewal 0xD69af2A796A737A103F12d2f0BCC563a13900E6F -epsw x
+
+ f2pool:
+	EthDcrMiner64.exe -epool eth.f2pool.com:8008 -ewal 0xd69af2a796a737a103f12d2f0bcc563a13900e6f -epsw x -eworker rig1
+
+ nanopool:
+	EthDcrMiner64.exe -epool eth-eu1.nanopool.org:9999 -ewal 0xd69af2a796a737a103f12d2f0bcc563a13900e6f -epsw x -eworker rig1
+
+ nicehash:
+	EthDcrMiner64.exe -epool stratum+tcp://daggerhashimoto.eu.nicehash.com:3353 -ewal 1LmMNkiEvjapn5PRY8A9wypcWJveRrRGWr -epsw x -esm 3 -allpools 1 -estale 0
+
+Ethereum forks mining:
+
+	EthDcrMiner64.exe -epool exp-us.dwarfpool.com:8018 -ewal 0xd69af2a796a737a103f12d2f0bcc563a13900e6f -epsw x -allcoins -1
+
+Ethereum SOLO mining (assume geth is on 192.168.0.1:8545):
+
+	EthDcrMiner64.exe -epool http://192.168.0.1:8545
+
+
 
 Dual mining:
 
@@ -348,33 +418,6 @@ EthDcrMiner64.exe -epool stratum+tcp://daggerhashimoto.eu.nicehash.com:3353 -ewa
 
 
 
-Ethereum-only mining:
-
- ethpool:
-	EthDcrMiner64.exe -epool us1.ethpool.org:3333 -ewal 0xD69af2A796A737A103F12d2f0BCC563a13900E6F -epsw x
-
- sparkpool:
-	EthDcrMiner64.exe -epool eu.sparkpool.com:3333 -ewal 0xD69af2A796A737A103F12d2f0BCC563a13900E6F -epsw x
-
- f2pool:
-	EthDcrMiner64.exe -epool eth.f2pool.com:8008 -ewal 0xd69af2a796a737a103f12d2f0bcc563a13900e6f -epsw x -eworker rig1
-
- nanopool:
-	EthDcrMiner64.exe -epool eth-eu1.nanopool.org:9999 -ewal 0xd69af2a796a737a103f12d2f0bcc563a13900e6f -epsw x -eworker rig1
-
- nicehash:
-	EthDcrMiner64.exe -epool stratum+tcp://daggerhashimoto.eu.nicehash.com:3353 -ewal 1LmMNkiEvjapn5PRY8A9wypcWJveRrRGWr -epsw x -esm 3 -allpools 1 -estale 0
-
-Ethereum forks mining:
-
-	EthDcrMiner64.exe -epool exp-us.dwarfpool.com:8018 -ewal 0xd69af2a796a737a103f12d2f0bcc563a13900e6f -epsw x -allcoins -1
-
-Ethereum SOLO mining (assume geth is on 192.168.0.1:8545):
-
-	EthDcrMiner64.exe -epool http://192.168.0.1:8545
-
-
-
 FINE-TUNING
 
 Dual mode: change "-dcri" option value with "+/-" keys in runtime to find best speeds.
@@ -426,7 +469,7 @@ KNOWN ISSUES
 
 TROUBLESHOOTING
 
-1. Install Catalyst v15.12 for old AMD cards; for Fury, Polaris and Vega cards use latest blockchain drivers.
+1. Make sure you use recent video drivers.
 2. Disable overclocking.
 3. Set environment variables as described above.
 4. Set Virtual Memory 16 GB or more.

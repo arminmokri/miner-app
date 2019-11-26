@@ -1,15 +1,3 @@
 # WARNING! Remove "#" characters to enable lines, with "#" they are disabled and will be ignored by miner! Check README for details.
-# Secondary pool for your dual mining. Ethereum mining uses most of the memory of the GPUs (Graphic Cards), leaving some space and other minor resources to be utilized for a secondary mining thread, without affecting your ethereum mining speed or at least having a minimal effect. Crypto Currencies like Decred, SiaCoin, Lbry and Pascal are some of the supported dual mining algorithms.
-# In our example, we will use a Nicehash pool which pays out in BitCoin no matter what you are mining. If you make $10 worth of Decred you will get paid $10 worth of BTC.
-# Mining pools are groups of cooperating miners who agree to share block rewards in proportion to their contributed mining hash power.
-# While mining pools are desirable to the average miner as they smooth out rewards and make them more predictable, they unfortunately concentrate power to the mining pools owner.
-# Miners can, however, choose to redirect their hashing power to a different mining pool at anytime.
-# Upon successful output of cryptocurrency mining, the reward is usually split among the miners based on the agreed terms and on their respective contributions to the mining activity through production of valid proof of work.
-# Anyone who wants to make a profit through cryptocurrency mining has the choice to either go solo with his own dedicated devices, or join a mining pool where multiple miners and their devices combine to enhance their hashing output.
-# For example, attaching six mining devices that each offers 335 megahashes per second (MH/s) can generate a cumulative 2 gigahashes of mining power, thereby leading to faster processing of the hash function.
-# Same as above for -ewal, there are several pool locations by nicehash, so choose appropriately from the list below and update this line:
-POOL: xvg.eu1.unimining.net:5770, WALLET: D6DWVDQ5PUsies5dgQXPMd4y7F4bfB5uuL.rig1, PSW: c=XVG, COIN: blake2s
-POOL: xvg.blake2s.com:8888, WALLET: D6DWVDQ5PUsies5dgQXPMd4y7F4bfB5uuL.rig1, PSW: c=XVG, COIN: blake2s
-POOL: s.antminepool.com:9008, WALLET: D6DWVDQ5PUsies5dgQXPMd4y7F4bfB5uuL, PSW: c=XVGB, COIN: blake2s
-POOL: pool.unimining.net:5770, WALLET: D6DWVDQ5PUsies5dgQXPMd4y7F4bfB5uuL.rig1, PSW: c=XVG, COIN: blake2s
-POOL: s.antminepool.com:9009, WALLET: D6DWVDQ5PUsies5dgQXPMd4y7F4bfB5uuL, PSW: c=XVGB, COIN: blake2s
+
+# POOL: stratum+tcp://dcr.suprnova.cc:3252, WALLET: Redhex.my, PSW: x

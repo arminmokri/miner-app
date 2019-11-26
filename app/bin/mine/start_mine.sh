@@ -29,7 +29,8 @@ then
    -cclock $cclock \
    -mclock $mclock \
    -cvddc $cvddc \
-   -mvddc $mvddc
+   -mvddc $mvddc \
+   -eres $eres
 elif [ "$pool" == "miningpoolhub.com" ] ### miningpoolhub.com
 then
    $claymore_path \
@@ -52,5 +53,6 @@ then
    -cclock $cclock \
    -mclock $mclock \
    -cvddc $cvddc \
-   -mvddc $mvddc
+   -mvddc $mvddc \
+   -eres $eres
 fi

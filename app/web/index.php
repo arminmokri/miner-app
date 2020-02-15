@@ -53,6 +53,7 @@ if(isset($_SESSION['logged_in_user'])){
 	$mine = shell_exec("tail -n 100 {$mine_log_path} | tac");
 	$mining = shell_exec("tail -n 300 {$mining_log_path} | tac");
 	$mining_old = shell_exec("tail -n 300 {$mining_old_log_path} | tac");
+	$number_of_days = shell_exec("wc -l {$balance_log_path} | awk {'print $1'} | tr -d '\n'");
 
 	### get total balance from pool
 	$total_balance = 0;
@@ -172,6 +173,7 @@ if(isset($_SESSION['logged_in_user'])){
                             </div>
                             <div id="menu4" class="tab-pane fade">
                                 <h3>Balance</h3>
+								<h5>Number Of Days: <?= $number_of_days ?> days</h5>
 				                <h5>TotaL Balance: <?= $total_balance ?></h5>
 				                <h5>L 24h Balance: <?= $last24h_balance ?></h5>
                                 <pre><?= $balance ?></pre>

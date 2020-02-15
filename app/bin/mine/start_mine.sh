@@ -23,6 +23,7 @@ then
    -r $r \
    -powlim $powlim \
    -tt $tt \
+   -ttli $ttli \
    -tstop $tstop \
    -fanmin $fanmin \
    -fanmax $fanmax \
@@ -30,7 +31,8 @@ then
    -mclock $mclock \
    -cvddc $cvddc \
    -mvddc $mvddc \
-   -eres $eres
+   -eres $eres \
+   -colors $colors
 elif [ "$pool" == "miningpoolhub.com" ] ### miningpoolhub.com
 then
    $claymore_path \
@@ -47,6 +49,7 @@ then
    -r $r \
    -powlim $powlim \
    -tt $tt \
+   -ttli $ttli \
    -tstop $tstop \
    -fanmin $fanmin \
    -fanmax $fanmax \
@@ -54,5 +57,6 @@ then
    -mclock $mclock \
    -cvddc $cvddc \
    -mvddc $mvddc \
-   -eres $eres
+   -eres $eres \
+   -colors $colors
 fi

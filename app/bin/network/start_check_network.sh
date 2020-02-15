@@ -9,7 +9,8 @@ source "$this_dir_path/../../../config/main.conf"
 datetime_path="$app_dir_path/bin/datetime.sh"
 
 ### ping path
-ping_path="$app_dir_path/bin/network/ping.sh '$network_url'"
+ping_path1="$app_dir_path/bin/network/ping.sh '$network_url1'"
+ping_path2="$app_dir_path/bin/network/ping.sh '$network_url2'"
 
 ### send reboot cmd to modem path
 send_reboot_cmd_to_modem_path="$app_dir_path/bin/network/send_cmd_to_modem.sh '$modem_ip' '$modem_username' '$modem_pasword' '$modem_reboot_cmd'"
@@ -20,10 +21,10 @@ network_dis=0
 
 while true
 do
-   ###
-   ping_res=$(eval $ping_path)
-   if [ "$ping_res" -eq "0" ]
-   then
+   ### pings
+   ping_res1=$(eval $ping_path1)
+   ping_res2=$(eval $ping_path2)
+   if [ "$ping_res1" -eq "0" ] || [ "$ping_res2" -eq "0" ]; then
       ###
       if [ "$network_dis" -eq "1" ]
 	  then

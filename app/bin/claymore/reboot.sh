@@ -6,7 +6,14 @@ this_dir_path=$(eval "dirname $this_file_path")
 source "$this_dir_path/../../../config/main.conf"
 
 ### stop mine path
-stop_mine_path="$app_dir_path/bin/mine/stop_mine.sh"
+#stop_mine_path="$app_dir_path/bin/mine/stop_mine.sh"
 
 ### run stop mine
-$stop_mine_path
+#$stop_mine_path
+
+### reboot path
+reboot_path="$app_dir_path/bin/reboot/reboot.sh"
+
+### run reboot
+$reboot_path
+

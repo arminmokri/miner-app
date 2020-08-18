@@ -12,7 +12,11 @@ datetime_path="$app_dir_path/bin/datetime.sh"
 datetime_res=$(eval $datetime_path)
 
 ### get last balance
-last_balance=$(eval "cat $last_balance_path")
+last_balance=0
+if [ -e "$last_balance_path" ]
+then
+ last_balance=$(eval "cat $last_balance_path")
+fi
 
 ### get balance
 balance=0

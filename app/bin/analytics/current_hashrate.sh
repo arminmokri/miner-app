@@ -11,6 +11,9 @@ datetime_path="$app_dir_path/bin/datetime.sh"
 ### get datetime
 datetime_res=$(eval $datetime_path)
 
+### reboot path
+reboot_path="$app_dir_path/bin/reboot/reboot.sh"
+
 ### get current hashrate
 current_hashrate=0
 if [ "$pool" == "nanopool.org" ] ### nanopool.org
@@ -33,4 +36,25 @@ then
    "$(eval "realpath $0")"
 else
    echo "$datetime_res | $current_hashrate Mh/s" >> $current_hashrate_log_path
+   uptime_in_minute=$(eval "echo $(awk '{print $1}' /proc/uptime) / 60 | bc")
+   if [ "$continuously_current_hashrate_times" != "0" ] && [ "$uptime_in_minute" -ge "$continuously_current_hashrate_uptime" ] && [ "$current_hashrate" == "0" ]
+   then
+      if [ -e "$current_hashrate_zero_counter_path" ]
+      then
+         current_hashrate_zero_counter=$(eval "cat $current_hashrate_zero_counter_path")
+      else
+	 current_hashrate_zero_counter=0
+      fi
+      let current_hashrate_zero_counter=current_hashrate_zero_counter+1
+      if [ "$current_hashrate_zero_counter" -ge "$continuously_current_hashrate_times" ]
+      then
+         echo "0" > $current_hashrate_zero_counter_path
+         sleep 1
+	 $reboot_path
+      else
+	 echo "$current_hashrate_zero_counter" > $current_hashrate_zero_counter_path
+      fi
+   else
+      echo "0" > $current_hashrate_zero_counter_path
+   fi
 fi

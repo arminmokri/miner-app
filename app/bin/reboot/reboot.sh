@@ -11,6 +11,10 @@ reboot_normal_path="$app_dir_path/bin/reboot/reboot_normal.sh"
 ### reboot force path
 reboot_force_path="$app_dir_path/bin/reboot/reboot_force.sh"
 
+### sync
+sync
+sleep 3
+
 ### reboot
 if [ "$reboot_type" == "normal" ] ### normal reboot
 then

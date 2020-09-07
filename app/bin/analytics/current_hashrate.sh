@@ -19,42 +19,62 @@ current_hashrate=0
 if [ "$pool" == "nanopool.org" ] ### nanopool.org
 then
    json=$(eval "wget -qO - 'https://api.nanopool.org/v1/eth/hashrate/$pool_wallet_id'")
-   current_hashrate=$(echo $json | jq '.data') 
+   current_hashrate=$(echo $json | jq '.data')
+   if [ "$current_hashrate" == "null" ] || [ "$current_hashrate" == "" ]
+   then
+     sleep 1
+     "$(eval "realpath $0")"
+     exit
+   fi
 elif [ "$pool" == "miningpoolhub.com" ] ### miningpoolhub.com
 then
    json=$(eval "wget -qO - 'https://ethereum.miningpoolhub.com/index.php?page=api&action=getuserhashrate&api_key=$pool_api_key'")
    current_hashrate=$(echo $json | jq '.getuserhashrate.data')
+   if [ "$current_hashrate" == "null" ] || [ "$current_hashrate" == "" ]
+   then
+     sleep 1
+     "$(eval "realpath $0")"
+     exit
+   fi
    current_hashrate=$(eval "bc <<< 'scale=2; $current_hashrate/1024'")
+elif [ "$pool" == "ethermine.org" ] ### ethermine.org
+then
+   json=$(eval "wget -qO - 'https://api.ethermine.org/miner/$pool_wallet_id/currentStats'")
+   api_status=$(echo $json | jq '.status')
+   if [ "$api_status" == "\"OK\"" ]
+   then
+      current_hashrate=$(echo $json | jq '.data.currentHashrate')
+      current_hashrate=$(eval "bc <<< 'scale=2; $current_hashrate/(1000*1000)'")
+   else
+      sleep 1
+      "$(eval "realpath $0")"
+      exit
+   fi
 else ### other pools not implemented yet
    current_hashrate=0
 fi
 
 ### log current hashrate
-if [ "$current_hashrate" == "null" ] || [ "$current_hashrate" == "" ]
+echo "$datetime_res | $current_hashrate Mh/s" >> $current_hashrate_log_path
+uptime_in_minute=$(eval "echo $(awk '{print $1}' /proc/uptime) / 60 | bc")
+if [ "$continuously_current_hashrate_times" != "0" ] && [ "$uptime_in_minute" -ge "$continuously_current_hashrate_uptime" ] && [ "$current_hashrate" == "0" ]
 then
-   sleep 1
-   "$(eval "realpath $0")"
-else
-   echo "$datetime_res | $current_hashrate Mh/s" >> $current_hashrate_log_path
-   uptime_in_minute=$(eval "echo $(awk '{print $1}' /proc/uptime) / 60 | bc")
-   if [ "$continuously_current_hashrate_times" != "0" ] && [ "$uptime_in_minute" -ge "$continuously_current_hashrate_uptime" ] && [ "$current_hashrate" == "0" ]
+   if [ -e "$current_hashrate_zero_counter_path" ]
    then
-      if [ -e "$current_hashrate_zero_counter_path" ]
-      then
-         current_hashrate_zero_counter=$(eval "cat $current_hashrate_zero_counter_path")
-      else
-	 current_hashrate_zero_counter=0
-      fi
-      let current_hashrate_zero_counter=current_hashrate_zero_counter+1
-      if [ "$current_hashrate_zero_counter" -ge "$continuously_current_hashrate_times" ]
-      then
-         echo "0" > $current_hashrate_zero_counter_path
-         sleep 1
-	 $reboot_path
-      else
-	 echo "$current_hashrate_zero_counter" > $current_hashrate_zero_counter_path
-      fi
+      current_hashrate_zero_counter=$(eval "cat $current_hashrate_zero_counter_path")
    else
-      echo "0" > $current_hashrate_zero_counter_path
+      current_hashrate_zero_counter=0
    fi
+   let current_hashrate_zero_counter=current_hashrate_zero_counter+1
+   if [ "$current_hashrate_zero_counter" -ge "$continuously_current_hashrate_times" ]
+   then
+      echo "0" > $current_hashrate_zero_counter_path
+      sleep 1
+      $reboot_path
+   else
+      echo "$current_hashrate_zero_counter" > $current_hashrate_zero_counter_path
+   fi
+else
+   echo "0" > $current_hashrate_zero_counter_path
 fi
+

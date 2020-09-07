@@ -38,6 +38,10 @@ if (isset($_SESSION['logged_in_user'])) {
 			$app_dir_path = GetConfigVariable("app_dir_path");
 			$reboot_path = "$app_dir_path/bin/reboot/reboot.sh";
 			shell_exec("sudo $reboot_path");
+		} elseif ($_POST['action'] == "restart_mining") {
+			$app_dir_path = GetConfigVariable("app_dir_path");
+			$mine_path = "$app_dir_path/bin/mine/mine.sh";
+			shell_exec("sudo $mine_path 'web'");
 		} else {
 			print "No Action";
 			exit;
@@ -79,6 +83,9 @@ if (isset($_SESSION['logged_in_user'])) {
 		$json = file_get_contents($url);
 		$json = json_decode($json, false);
 		$total_balance = $json->data;
+		if ($total_balance == "null" || $total_balance == "") {
+			$total_balance = "error";
+		}
 	} elseif ($pool == "miningpoolhub.com") {
 		$pool_api_key = GetConfigVariable("pool_api_key");
 		$url = "https://ethereum.miningpoolhub.com/index.php?page=api&action=getuserbalance&api_key={$pool_api_key}";
@@ -86,19 +93,35 @@ if (isset($_SESSION['logged_in_user'])) {
 		$json = file_get_contents($url);
 		$json = json_decode($json, false);
 		$total_balance = $json->getuserbalance->data->confirmed;
+		if ($total_balance == "null" || $total_balance == "") {
+			$total_balance = "error";
+		}
+	} elseif ($pool == "ethermine.org") {
+		$pool_wallet_id = GetConfigVariable("pool_wallet_id");
+		$url = "https://api.ethermine.org/miner/{$pool_wallet_id}/currentStats";
+		ini_set('default_socket_timeout', 4);
+		$json = file_get_contents($url);
+		$json = json_decode($json, false);
+		if ($json->status == "OK") {
+			$total_balance = $json->data->unpaid;
+			$total_balance =  (float) sprintf("%.8f", $total_balance / 1000000000000000000);
+		} else {
+			$total_balance = "error";
+		}
 	} else { ### not implemented other pools yet
-		$total_balance = 0;
+		$total_balance = "error";
 	}
 
 	### get last balance
 	$last_balance = shell_exec("cat {$last_balance_path}");
 
 	### calc last 24H balance
-	if ($total_balance >= $last_balance) {
-		$last24h_balance = $total_balance - $last_balance;
-	} else {
+	if ($total_balance == "error" || $total_balance < $last_balance) {
 		$last24h_balance = "unknown";
+	} else {
+		$last24h_balance = $total_balance - $last_balance;
 	}
+
 ?>
 	<!DOCTYPE html>
 	<html lang="en">
@@ -172,10 +195,18 @@ if (isset($_SESSION['logged_in_user'])) {
 								<div class="alert alert-info">
 									<strong><?= $number_of_cards ?> GPUs</strong>
 								</div>
-								<form method="post" action="./">
-									<input type="hidden" name="action" value="reboot_system" />
-									<input type="submit" class="btn btn-danger" value="Reboot System" onclick="return confirm('Are you sure?')">
-								</form>
+								<div class="btn-group">
+									<form method="post" action="./">
+										<input type="hidden" name="action" value="reboot_system" />
+										<input type="submit" class="btn btn-danger" value="Reboot System" onclick="return confirm('Are you sure?')">
+									</form>
+								</div>
+								<div class="btn-group">
+									<form method="post" action="./">
+										<input type="hidden" name="action" value="restart_mining" />
+										<input type="submit" class="btn btn-danger" value="Restart Mining" onclick="return confirm('Are you sure?')">
+									</form>
+								</div>
 							</div>
 						</div>
 					</div>

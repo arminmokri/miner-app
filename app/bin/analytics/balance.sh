@@ -24,13 +24,38 @@ if [ "$pool" == "nanopool.org" ] ### nanopool.org
 then
    json=$(eval "wget -qO - 'https://api.nanopool.org/v1/eth/balance/$pool_wallet_id'")
    balance=$(echo $json | jq '.data')
+   if [ "$balance" == "null" ] || [ "$balance" == "" ]
+   then
+      sleep 1
+      "$(eval "realpath $0")"
+      exit
+   fi
 elif [ "$pool" == "miningpoolhub.com" ] ### miningpoolhub.com
 then
    json=$(eval "wget -qO - 'https://ethereum.miningpoolhub.com/index.php?page=api&action=getuserbalance&api_key=$pool_api_key'")
    balance=$(echo $json | jq '.getuserbalance.data.confirmed')
+   if [ "$balance" == "null" ] || [ "$balance" == "" ]
+   then
+      sleep 1
+      "$(eval "realpath $0")"
+      exit
+   fi
    if [[ $balance == *e* ]]
    then
       balance=$(eval "printf "%.16f" $balance")
+   fi
+elif [ "$pool" == "ethermine.org" ] ### ethermine.org
+then
+   json=$(eval "wget -qO - 'https://api.ethermine.org/miner/$pool_wallet_id/currentStats'")
+   api_status=$(echo $json | jq '.status')
+   if [ "$api_status" == "\"OK\"" ]
+   then
+      balance=$(echo $json | jq '.data.unpaid')
+      balance=$(eval "bc <<< 'scale=8; $balance/1000000000000000000'")
+   else
+      sleep 1
+      "$(eval "realpath $0")"
+      exit
    fi
 else ### not implemented other pools yet
    balance=0
@@ -44,11 +69,6 @@ then
 fi
 
 ### log balance
-if [ "$balance" == "null" ] || [ "$balance" == "" ]
-then
-   sleep 1
-   "$(eval "realpath $0")"
-else
-   echo "$datetime_res | $balance | $diff" >> $balance_log_path
-   echo "$balance" > $last_balance_path
-fi
+echo "$datetime_res | $balance | $diff" >> $balance_log_path
+echo "$balance" > $last_balance_path
+

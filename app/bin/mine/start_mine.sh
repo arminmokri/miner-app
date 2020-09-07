@@ -67,4 +67,30 @@ then
    -mvddc $mvddc \
    -eres $eres \
    -colors $colors
+elif [ "$pool" == "ethermine.org" ] ### ethermine.org
+then
+   $tor_socks $claymore_path \
+   -epool $pool_url \
+   -ewal $pool_wallet_id.$system_mac_address \
+   -epsw $epsw \
+   -esm $esm \
+   -asm $asm \
+   -mport $mport \
+   -mode $mode \
+   -allpools $allpools \
+   -dbg $dbg \
+   -r $r \
+   -powlim $powlim \
+   -tt $tt \
+   -ttli $ttli \
+   -tstop $tstop \
+   -fanmin $fanmin \
+   -fanmax $fanmax \
+   -cclock $cclock \
+   -mclock $mclock \
+   -cvddc $cvddc \
+   -mvddc $mvddc \
+   -eres $eres \
+   -colors $colors
 fi
+

@@ -11,6 +11,13 @@ datetime_path="$app_dir_path/bin/datetime.sh"
 ### get datetime
 datetime_res=$(eval $datetime_path)
 
+### if achieve number of try times to get data, do exit
+datetime_sec=$(eval "date --date='$datetime_res' '+%S'")
+if [ "$reported_hashrate_log_try_times" != "0" ] && [ "$datetime_sec" -gt "$reported_hashrate_log_try_times" ]
+then
+   exit
+fi
+
 ### get reported hashrate
 reported_hashrate=0
 if [ "$pool" == "nanopool.org" ] ### nanopool.org

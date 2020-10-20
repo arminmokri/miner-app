@@ -13,10 +13,6 @@ datetime_res=$(eval $datetime_path)
 
 ### if achieve number of try times to get data, do exit
 datetime_sec=$(eval "date --date='$datetime_res' '+%S'")
-if [ "$reported_hashrate_log_try_times" != "0" ] && [ "$datetime_sec" -gt "$reported_hashrate_log_try_times" ]
-then
-   exit
-fi
 
 ### get reported hashrate
 reported_hashrate=0
@@ -26,9 +22,14 @@ then
    reported_hashrate=$(echo $json | jq '.data')
    if [ "$reported_hashrate" == "null" ] || [ "$reported_hashrate" == "" ]
    then
-      sleep 1
-      "$(eval "realpath $0")"
-      exit
+      if [ "$reported_hashrate_log_try_times" == "0" ] || [ "$reported_hashrate_log_try_times" -ge "$datetime_sec" ]
+      then
+         sleep 1
+         "$(eval "realpath $0")"
+         exit
+      else
+         reported_hashrate="-1"
+      fi
    fi
 elif [ "$pool" == "miningpoolhub.com" ] ### miningpoolhub.com
 then
@@ -42,14 +43,23 @@ then
       reported_hashrate=$(echo $json | jq '.data.reportedHashrate')
       reported_hashrate=$(eval "bc <<< 'scale=2; $reported_hashrate/(1000*1000)'")
    else
-      sleep 1
-      "$(eval "realpath $0")"
-      exit
+      if [ "$reported_hashrate_log_try_times" == "0" ] || [ "$reported_hashrate_log_try_times" -ge "$datetime_sec" ]
+      then
+         sleep 1
+         "$(eval "realpath $0")"
+         exit
+      else
+         reported_hashrate="-1"
+      fi
    fi
 else ### other pools not implemented yet
    reported_hashrate=0
 fi
 
 ### log reported hashrate
-echo "$datetime_res | $reported_hashrate Mh/s" >> $reported_hashrate_log_path
-
+if [ "$avg_hashrate" == "-1" ]
+then
+   echo "$datetime_res | Unavailable Data, Try($reported_hashrate_log_try_times)" >> $reported_hashrate_log_path
+else
+   echo "$datetime_res | $reported_hashrate Mh/s" >> $reported_hashrate_log_path
+fi

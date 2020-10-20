@@ -13,10 +13,6 @@ datetime_res=$(eval $datetime_path)
 
 ### if achieve number of try times to get data, do exit
 datetime_sec=$(eval "date --date='$datetime_res' '+%S'")
-if [ "$current_hashrate_log_try_times" != "0" ] && [ "$datetime_sec" -gt "$current_hashrate_log_try_times" ]
-then
-   exit
-fi
 
 ### reboot path
 reboot_path="$app_dir_path/bin/reboot/reboot.sh"
@@ -29,9 +25,14 @@ then
    current_hashrate=$(echo $json | jq '.data')
    if [ "$current_hashrate" == "null" ] || [ "$current_hashrate" == "" ]
    then
-     sleep 1
-     "$(eval "realpath $0")"
-     exit
+      if [ "$current_hashrate_log_try_times" == "0" ] || [ "$current_hashrate_log_try_times" -ge "$datetime_sec" ]
+      then
+         sleep 1
+         "$(eval "realpath $0")"
+         exit
+      else
+         current_hashrate="-1"
+      fi
    fi
 elif [ "$pool" == "miningpoolhub.com" ] ### miningpoolhub.com
 then
@@ -39,11 +40,17 @@ then
    current_hashrate=$(echo $json | jq '.getuserhashrate.data')
    if [ "$current_hashrate" == "null" ] || [ "$current_hashrate" == "" ]
    then
-     sleep 1
-     "$(eval "realpath $0")"
-     exit
+      if [ "$current_hashrate_log_try_times" == "0" ] || [ "$current_hashrate_log_try_times" -ge "$datetime_sec" ]
+      then
+         sleep 1
+         "$(eval "realpath $0")"
+         exit
+      else
+         current_hashrate="-1"
+      fi
+   else
+      current_hashrate=$(eval "bc <<< 'scale=2; $current_hashrate/1024'")
    fi
-   current_hashrate=$(eval "bc <<< 'scale=2; $current_hashrate/1024'")
 elif [ "$pool" == "ethermine.org" ] ### ethermine.org
 then
    json=$(eval "wget -qO - 'https://api.ethermine.org/miner/$pool_wallet_id/currentStats'")
@@ -53,35 +60,44 @@ then
       current_hashrate=$(echo $json | jq '.data.currentHashrate')
       current_hashrate=$(eval "bc <<< 'scale=2; $current_hashrate/(1000*1000)'")
    else
-      sleep 1
-      "$(eval "realpath $0")"
-      exit
+      if [ "$current_hashrate_log_try_times" == "0" ] || [ "$current_hashrate_log_try_times" -ge "$datetime_sec" ]
+      then
+         sleep 1
+         "$(eval "realpath $0")"
+         exit
+      else
+         current_hashrate="-1"
+      fi
    fi
 else ### other pools not implemented yet
    current_hashrate=0
 fi
 
 ### log current hashrate
-echo "$datetime_res | $current_hashrate Mh/s" >> $current_hashrate_log_path
-uptime_in_minute=$(eval "echo $(awk '{print $1}' /proc/uptime) / 60 | bc")
-if [ "$continuously_current_hashrate_times" != "0" ] && [ "$uptime_in_minute" -ge "$continuously_current_hashrate_uptime" ] && [ "$current_hashrate" == "0" ]
+if [ "$current_hashrate" == "-1" ]
 then
-   if [ -e "$current_hashrate_zero_counter_path" ]
-   then
-      current_hashrate_zero_counter=$(eval "cat $current_hashrate_zero_counter_path")
-   else
-      current_hashrate_zero_counter=0
-   fi
-   let current_hashrate_zero_counter=current_hashrate_zero_counter+1
-   if [ "$current_hashrate_zero_counter" -ge "$continuously_current_hashrate_times" ]
-   then
-      echo "0" > $current_hashrate_zero_counter_path
-      sleep 1
-      $reboot_path
-   else
-      echo "$current_hashrate_zero_counter" > $current_hashrate_zero_counter_path
-   fi
+   echo "$datetime_res | Unavailable Data, Try($current_hashrate_log_try_times)" >> $current_hashrate_log_path
 else
-   echo "0" > $current_hashrate_zero_counter_path
+   echo "$datetime_res | $current_hashrate Mh/s" >> $current_hashrate_log_path
+   uptime_in_minute=$(eval "echo $(awk '{print $1}' /proc/uptime) / 60 | bc")
+   if [ "$continuously_current_hashrate_times" != "0" ] && [ "$uptime_in_minute" -ge "$continuously_current_hashrate_uptime" ] && [ "$current_hashrate" == "0" ]
+   then
+      if [ -e "$current_hashrate_zero_counter_path" ]
+      then
+         current_hashrate_zero_counter=$(eval "cat $current_hashrate_zero_counter_path")
+      else
+         current_hashrate_zero_counter=0
+      fi
+      let current_hashrate_zero_counter=current_hashrate_zero_counter+1
+      if [ "$current_hashrate_zero_counter" -ge "$continuously_current_hashrate_times" ]
+      then
+         echo "0" > $current_hashrate_zero_counter_path
+         sleep 1
+         $reboot_path
+      else
+         echo "$current_hashrate_zero_counter" > $current_hashrate_zero_counter_path
+      fi
+   else
+      echo "0" > $current_hashrate_zero_counter_path
+   fi
 fi
-

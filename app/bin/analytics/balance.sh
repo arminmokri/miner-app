@@ -13,16 +13,12 @@ datetime_res=$(eval $datetime_path)
 
 ### if achieve number of try times to get data, do exit
 datetime_sec=$(eval "date --date='$datetime_res' '+%S'")
-if [ "$balance_log_try_times" != "0" ] && [ "$datetime_sec" -gt "$balance_log_try_times" ]
-then
-   exit
-fi
 
 ### get last balance
 last_balance=0
 if [ -e "$last_balance_path" ]
 then
- last_balance=$(eval "cat $last_balance_path")
+   last_balance=$(eval "cat $last_balance_path")
 fi
 
 ### get balance
@@ -33,9 +29,14 @@ then
    balance=$(echo $json | jq '.data')
    if [ "$balance" == "null" ] || [ "$balance" == "" ]
    then
-      sleep 1
-      "$(eval "realpath $0")"
-      exit
+      if [ "$balance_log_try_times" == "0" ] || [ "$balance_log_try_times" -ge "$datetime_sec" ]
+      then
+         sleep 1
+         "$(eval "realpath $0")"
+         exit
+      else
+         balance="-1"
+      fi
    fi
 elif [ "$pool" == "miningpoolhub.com" ] ### miningpoolhub.com
 then
@@ -43,13 +44,19 @@ then
    balance=$(echo $json | jq '.getuserbalance.data.confirmed')
    if [ "$balance" == "null" ] || [ "$balance" == "" ]
    then
-      sleep 1
-      "$(eval "realpath $0")"
-      exit
-   fi
-   if [[ $balance == *e* ]]
-   then
-      balance=$(eval "printf "%.16f" $balance")
+      if [ "$balance_log_try_times" == "0" ] || [ "$balance_log_try_times" -ge "$datetime_sec" ]
+      then
+         sleep 1
+         "$(eval "realpath $0")"
+         exit
+      else
+         balance="-1"
+      fi
+   else
+      if [[ $balance == *e* ]]
+      then
+         balance=$(eval "printf "%.16f" $balance")
+      fi
    fi
 elif [ "$pool" == "ethermine.org" ] ### ethermine.org
 then
@@ -60,22 +67,30 @@ then
       balance=$(echo $json | jq '.data.unpaid')
       balance=$(eval "bc <<< 'scale=8; $balance/1000000000000000000'")
    else
-      sleep 1
-      "$(eval "realpath $0")"
-      exit
+      if [ "$balance_log_try_times" == "0" ] || [ "$balance_log_try_times" -ge "$datetime_sec" ]
+      then
+         sleep 1
+         "$(eval "realpath $0")"
+         exit
+      else
+         balance="-1"
+      fi
    fi
 else ### not implemented other pools yet
    balance=0
 fi
 
-### calculate diff
-diff=0
-if [[ $(echo "$balance > $last_balance" | bc -l) > 0 ]]
-then
-   diff=$(eval "echo '$balance - $last_balance' | bc")
-fi
-
 ### log balance
-echo "$datetime_res | $balance | $diff" >> $balance_log_path
-echo "$balance" > $last_balance_path
-
+if [ "$balance" == "-1" ]
+then
+   echo "$datetime_res | Unavailable Data, Try($balance_log_try_times)" >> $balance_log_path
+else
+   ### calculate diff
+   diff=0
+   if [[ $(echo "$balance > $last_balance" | bc -l) > 0 ]]
+   then
+      diff=$(eval "echo '$balance - $last_balance' | bc")
+   fi
+   echo "$datetime_res | $balance | $diff" >> $balance_log_path
+   echo "$balance" > $last_balance_path  
+fi

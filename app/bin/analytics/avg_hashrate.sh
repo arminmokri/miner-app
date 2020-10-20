@@ -13,10 +13,6 @@ datetime_res=$(eval $datetime_path)
 
 ### if achieve number of try times to get data, do exit
 datetime_sec=$(eval "date --date='$datetime_res' '+%S'")
-if [ "$avg_hashrate_log_try_times" != "0" ] && [ "$datetime_sec" -gt "$avg_hashrate_log_try_times" ]
-then
-   exit
-fi
 
 ### get avg hashrate
 avg_hashrate=0
@@ -26,9 +22,14 @@ then
    avg_hashrate=$(echo $json | jq '.data')
    if [ "$avg_hashrate" == "null" ] || [ "$avg_hashrate" == "" ]
    then
-      sleep 1
-      "$(eval "realpath $0")"
-      exit
+      if [ "$avg_hashrate_log_try_times" == "0" ] || [ "$avg_hashrate_log_try_times" -ge "$datetime_sec" ]
+      then
+         sleep 1
+         "$(eval "realpath $0")"
+         exit
+      else
+         avg_hashrate="-1"
+      fi
    fi
 elif [ "$pool" == "miningpoolhub.com" ] ### miningpoolhub.com
 then
@@ -42,14 +43,23 @@ then
       avg_hashrate=$(echo $json | jq '.data.averageHashrate')
       avg_hashrate=$(eval "bc <<< 'scale=2; $avg_hashrate/(1000*1000)'")
    else
-      sleep 1
-      "$(eval "realpath $0")"
-      exit
+      if [ "$avg_hashrate_log_try_times" == "0" ] || [ "$avg_hashrate_log_try_times" -ge "$datetime_sec" ]
+      then
+         sleep 1
+         "$(eval "realpath $0")"
+         exit
+      else
+         avg_hashrate="-1"
+      fi
    fi
 else ### not implemented other pools yet
    avg_hashrate=0
 fi
 
 ### log avg hashrate
-echo "$datetime_res | $avg_hashrate Mh/s" >> $avg_hashrate_log_path
-
+if [ "$avg_hashrate" == "-1" ]
+then
+   echo "$datetime_res | Unavailable Data, Try($avg_hashrate_log_try_times)" >> $avg_hashrate_log_path
+else
+   echo "$datetime_res | $avg_hashrate Mh/s" >> $avg_hashrate_log_path
+fi

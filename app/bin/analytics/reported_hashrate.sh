@@ -57,7 +57,7 @@ else ### other pools not implemented yet
 fi
 
 ### log reported hashrate
-if [ "$avg_hashrate" == "-1" ]
+if [ "$reported_hashrate" == "-1" ]
 then
    echo "$datetime_res | Unavailable Data, Try($reported_hashrate_log_try_times)" >> $reported_hashrate_log_path
 else

@@ -12,3 +12,4 @@ eval "variable_value=\$$variable_name"
 
 ### print variable value
 echo -n $variable_value;
+

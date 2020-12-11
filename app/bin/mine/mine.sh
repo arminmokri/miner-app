@@ -8,6 +8,9 @@ source "$this_dir_path/../../../config/main.conf"
 ### datetime path
 datetime_path="$app_dir_path/bin/datetime.sh"
 
+### gpu global vars path
+gpu_global_vars_path="$app_dir_path/bin/mine/gpu_global_vars.sh"
+
 ### overclock path
 overclock_path="$app_dir_path/bin/mine/overclock.sh"
 
@@ -45,6 +48,9 @@ sleep 2
 
 ### cp
 cp $mining_log_path $mining_old_log_path
+
+### run gpu global vars
+$gpu_global_vars_path 2> $gpu_global_vars_log_path
 
 ### run overclock
 $overclock_path 2> $overclock_log_path

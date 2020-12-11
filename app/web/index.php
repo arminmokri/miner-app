@@ -2,7 +2,7 @@
 function GetConfigVariable($variable)
 {
 	$this_file_path = __DIR__;
-	$main_conf_path = "{$this_file_path}/get_config_variable.sh";
+	$main_conf_path = "/bin/bash {$this_file_path}/get_config_variable.sh";
 	$cmd = "{$main_conf_path} '{$variable}' 2>/dev/null";
 	$value = shell_exec($cmd);
 	return $value;
@@ -76,6 +76,7 @@ if (isset($_SESSION['logged_in_user'])) {
 
 	### get total balance from pool
 	$total_balance = 0;
+
 	if ($pool == "nanopool.org") {
 		$pool_wallet_id = GetConfigVariable("pool_wallet_id");
 		$url = "https://api.nanopool.org/v1/eth/balance/{$pool_wallet_id}";

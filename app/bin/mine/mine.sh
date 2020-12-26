@@ -33,7 +33,7 @@ else
 fi
 
 ### Do Not Run If On Running
-pid_file=$(eval "realpath $0").pid
+pid_file="/tmp/mine.sh.pid"
 if [ -f $pid_file ]
 then
    echo "$datetime_res | Restart Mine | failed to restart mine ($caller_proc)" >> $mine_log_path

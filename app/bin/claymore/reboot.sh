@@ -14,6 +14,10 @@ source "$this_dir_path/../../../config/main.conf"
 ### reboot path
 reboot_path="$app_dir_path/bin/reboot/reboot.sh"
 
-### run reboot
-$reboot_path
-
+### reboot
+uptime_in_minute=$(eval "echo $(awk '{print $1}' /proc/uptime) / 60 | bc")
+if [ "$uptime_in_minute" -ge "$claymore_reboot_uptime" ]
+then
+   ### run reboot
+   $reboot_path
+fi

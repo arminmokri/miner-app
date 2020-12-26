@@ -10,7 +10,7 @@ claymore_path="$app_dir_path/bin/claymore/ethdcrminer64"
 
 ### use tor network
 tor_socks=""
-if [ "$use_tor_network" == "1" ]
+if [ "$use_tor_network_for_mine" == "1" ]
 then
    tor_socks="torsocks"
 fi

@@ -8,7 +8,10 @@ source "$this_dir_path/../../../config/main.conf"
 ### mine path
 mine_path="$app_dir_path/bin/mine/mine.sh"
 
-proc_id=$(eval "pgrep -f ethdcrminer64 | head -n 1")
+### get proc id
+proc_id=$(eval "pgrep -f $miner_module_name | head -n 1")
+
+### call miner if no proc
 if ! [ $proc_id > 0 ]
 then
    eval "$mine_path 'no proc id'"

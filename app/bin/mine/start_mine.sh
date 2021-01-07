@@ -95,7 +95,6 @@ then
       $tor_socks $lolminer_path \
       --algo ETHASH --pool $pool_url --user $pool_username.$workername $@
    fi
-   fi
 elif [ "$pool" == "ethermine.org" ] ### ethermine.org
 then
    if [ "$miner" == "claymore" ] ### claymore

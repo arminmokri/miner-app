@@ -1,0 +1,320 @@
++---------------------------------------------------------+
+|    _       _ __  __ _                   _   _ _____     |
+|   | | ___ | |  \/  (_)_ __   ___ _ __  / | / |___  |    |
+|   | |/ _ \| | |\/| | | '_ \ / _ \ '__| | | | |  / /     |
+|   | | (_) | | |  | | | | | |  __/ |    | |_| | / /      |
+|   |_|\___/|_|_|  |_|_|_| |_|\___|_|    |_(_)_|/_/       |
+|                                                         |
+|              This software is for mining                |
+|              Ethash, Etchash                            |
+|              Equihash 144/5, 192/7, 210/9               |
+|              BeamHash I, II, III                        |
+|              ZelHash     (EquihashR 125/4/0)            |
+|              Cuck(ar)oo 29                              |
+|              Cuckaroo   30 CTX                          |
+|              Cuckatoo   31/32                           |
+|                                                         |
+|                                                         |
+|           Made by Lolliedieb, December 2020             |
++---------------------------------------------------------+
+
+Setup Miner... 
+Device 0: 
+    Name:    Radeon 6800 series 
+    Address: 40:0 
+    Vendor:  Advanced Micro Devices (AMD), ROCm
+    Memory:  16368 MByte (16368 MByte free) 
+    Active:  true (Selected Algorithm: BeamHash III 4G+) 
+
+Connecting to pool... 
+Connected to beam.sunpool.top:3334  (TLS enabled)
+TLS Handshake success 
+Authorized worker: 32f2e8765c2e8f5ea41becc5f397024c94d80cc5fc50ee917af23b260ecb3a5f.testRun 
+New job received: 1255015 Difficulty: 1024 
+Start Mining... 
+Average speed (30s): 31.2 sol/s 
+GPU 0: Found a share of difficulty 1.0k
+GPU 0: Share accepted (18 ms) 
+GPU 0: Found a share of difficulty 22.3k
+GPU 0: Share accepted (17 ms) 
+Average speed (30s): 32.6 sol/s 
+GPU 0: Found a share of difficulty 3.6k
+GPU 0: Share accepted (17 ms) 
+Average speed (30s): 30.6 sol/s 
+Average speed (30s): 34.2 sol/s 
+GPU 0: Found a share of difficulty 6.7k
+GPU 0: Share accepted (18 ms) 
+GPU 0: Found a share of difficulty 1.6k
+GPU 0: Share accepted (17 ms) 
+--------------------------------------------- 
+Statistics (09:34:43); Mining: BeamHash III 
+Connected to: beam.sunpool.top:3334 
+Uptime: 0h 2m 31s 
+                        GPU 0   Total
+Speed (sol/s):           32.1    32.1
+Best Share:             22.3K   22.3K
+Shares (A/S/R):         5/0/0   5/0/0
+Power (W):              180.1   180.1
+Efficiency (sol/s/W):   0.178   0.178
+Temp (deg C):              71        
+Junction (deg C):          79        
+Memory (deg C):            76        
+Fan Speed (%):             48        
+--------------------------------------------- 
+Average speed (30s): 32.0 sol/s 
+GPU 0: Found a share of difficulty 3.4k
+GPU 0: Share accepted (17 ms) 
+New job received: 1255016 Difficulty: 1024 
+Average speed (30s): 33.4 sol/s 
+Average speed (30s): 34.0 sol/s 
+GPU 0: Found a share of difficulty 1.7k
+GPU 0: Share accepted (20 ms) 
+Average speed (30s): 31.3 sol/s 
+Average speed (30s): 33.1 sol/s 
+GPU 0: Found a share of difficulty 1.3k
+GPU 0: Share accepted (18 ms) 
+GPU 0: Found a share of difficulty 13.5k
+GPU 0: Share accepted (17 ms) 
+New job received: 1255017 Difficulty: 1024 
+New job received: 1255024 Difficulty: 1024 
+GPU 0: Found a share of difficulty 1.5k
+GPU 0: Share accepted (17 ms) 
+GPU 0: Found a share of difficulty 3.6k
+GPU 0: Share accepted (17 ms) 
+GPU 0: Found a share of difficulty 1.1k
+GPU 0: Share accepted (18 ms) 
+--------------------------------------------- 
+Statistics (09:37:13); Mining: BeamHash III 
+Connected to: beam.sunpool.top:3334 
+Uptime: 0h 5m 1s 
+                         GPU 0    Total
+Speed (sol/s):            33.1     33.1
+Best Share:              22.3K    22.3K
+Shares (A/S/R):         12/0/0   12/0/0
+Power (W):               185.8    185.8
+Efficiency (sol/s/W):    0.177    0.178
+Temp (deg C):               73         
+Junction (deg C):           82         
+Memory (deg C):             78         
+Fan Speed (%):              49         
+--------------------------------------------- 
+Average speed (30s): 33.5 sol/s 
+GPU 0: Found a share of difficulty 2.9k
+GPU 0: Share accepted (17 ms) 
+New job received: 1255025 Difficulty: 1024 
+GPU 0: Found a share of difficulty 3.3k
+GPU 0: Share accepted (16 ms) 
+Average speed (30s): 34.0 sol/s 
+GPU 0: Found a share of difficulty 7.8k
+GPU 0: Share accepted (17 ms) 
+Average speed (30s): 33.2 sol/s 
+Average speed (30s): 33.6 sol/s 
+GPU 0: Found a share of difficulty 41.7k
+GPU 0: Share accepted (17 ms) 
+GPU 0: Found a share of difficulty 8.2k
+GPU 0: Share accepted (20 ms) 
+Average speed (30s): 31.9 sol/s 
+GPU 0: Found a share of difficulty 1.3k
+GPU 0: Share accepted (17 ms) 
+GPU 0: Found a share of difficulty 1.2k
+GPU 0: Share accepted (18 ms) 
+--------------------------------------------- 
+Statistics (09:39:43); Mining: BeamHash III 
+Connected to: beam.sunpool.top:3334 
+Uptime: 0h 7m 31s 
+                         GPU 0    Total
+Speed (sol/s):            32.9     32.9
+Best Share:              41.7K    41.7K
+Shares (A/S/R):         19/0/0   19/0/0
+Power (W):               180.1    180.1
+Efficiency (sol/s/W):    0.182    0.183
+Temp (deg C):               73         
+Junction (deg C):           81         
+Memory (deg C):             78         
+Fan Speed (%):              49         
+--------------------------------------------- 
+Average speed (30s): 32.0 sol/s 
+GPU 0: Found a share of difficulty 1.9k
+GPU 0: Share accepted (17 ms) 
+GPU 0: Found a share of difficulty 1.3k
+GPU 0: Share accepted (16 ms) 
+Average speed (30s): 32.8 sol/s 
+GPU 0: Found a share of difficulty 1.9k
+GPU 0: Share accepted (18 ms) 
+GPU 0: Found a share of difficulty 1.2k
+GPU 0: Share accepted (17 ms) 
+Average speed (30s): 32.9 sol/s 
+GPU 0: Found a share of difficulty 5.7k
+GPU 0: Share accepted (17 ms) 
+GPU 0: Found a share of difficulty 12.9k
+GPU 0: Share accepted (16 ms) 
+New job received: 1255026 Difficulty: 1024 
+Average speed (30s): 31.3 sol/s 
+New job received: 1255027 Difficulty: 1024 
+New job received: 1255028 Difficulty: 1024 
+Average speed (30s): 34.4 sol/s 
+New job received: 1255029 Difficulty: 1024 
+--------------------------------------------- 
+Statistics (09:42:13); Mining: BeamHash III 
+Connected to: beam.sunpool.top:3334 
+Uptime: 0h 10m 1s 
+                         GPU 0    Total
+Speed (sol/s):            32.9     32.9
+Best Share:              41.7K    41.7K
+Shares (A/S/R):         25/0/0   25/0/0
+Power (W):               172.8    172.8
+Efficiency (sol/s/W):    0.190    0.190
+Temp (deg C):               74         
+Junction (deg C):           82         
+Memory (deg C):             78         
+Fan Speed (%):              48         
+--------------------------------------------- 
+Average speed (30s): 33.2 sol/s 
+Average speed (30s): 30.8 sol/s 
+Average speed (30s): 33.2 sol/s 
+GPU 0: Found a share of difficulty 1.4k
+GPU 0: Share accepted (23 ms) 
+GPU 0: Found a share of difficulty 1.7k
+GPU 0: Share accepted (17 ms) 
+Average speed (30s): 34.4 sol/s 
+GPU 0: Found a share of difficulty 1.1k
+GPU 0: Share accepted (17 ms) 
+Average speed (30s): 32.5 sol/s 
+New job received: 1255030 Difficulty: 1024 
+GPU 0: Found a share of difficulty 1.3k
+GPU 0: Share accepted (17 ms) 
+New job received: 1255031 Difficulty: 1024 
+--------------------------------------------- 
+Statistics (09:44:43); Mining: BeamHash III 
+Connected to: beam.sunpool.top:3334 
+Uptime: 0h 12m 31s 
+                         GPU 0    Total
+Speed (sol/s):            32.6     32.6
+Best Share:              41.7K    41.7K
+Shares (A/S/R):         29/0/0   29/0/0
+Power (W):               170.7    170.7
+Efficiency (sol/s/W):    0.191    0.191
+Temp (deg C):               74         
+Junction (deg C):           82         
+Memory (deg C):             80         
+Fan Speed (%):              48         
+--------------------------------------------- 
+Average speed (30s): 32.4 sol/s 
+Average speed (30s): 33.5 sol/s 
+GPU 0: Found a share of difficulty 2.3k
+GPU 0: Share accepted (17 ms) 
+GPU 0: Found a share of difficulty 5.0k
+GPU 0: Share accepted (16 ms) 
+GPU 0: Found a share of difficulty 2.2k
+GPU 0: Share accepted (17 ms) 
+Average speed (30s): 36.5 sol/s 
+Average speed (30s): 33.0 sol/s 
+Average speed (30s): 31.4 sol/s 
+--------------------------------------------- 
+Statistics (09:47:13); Mining: BeamHash III 
+Connected to: beam.sunpool.top:3334 
+Uptime: 0h 15m 1s 
+                         GPU 0    Total
+Speed (sol/s):            33.5     33.5
+Best Share:              41.7K    41.7K
+Shares (A/S/R):         32/0/0   32/0/0
+Power (W):               186.8    186.8
+Efficiency (sol/s/W):    0.179    0.179
+Temp (deg C):               74         
+Junction (deg C):           83         
+Memory (deg C):             80         
+Fan Speed (%):              49         
+--------------------------------------------- 
+Average speed (30s): 33.0 sol/s 
+Average speed (30s): 33.6 sol/s 
+GPU 0: Found a share of difficulty 126.6k
+GPU 0: Share accepted (18 ms) 
+GPU 0: Found a share of difficulty 1.1k
+GPU 0: Share accepted (18 ms) 
+Average speed (30s): 31.8 sol/s 
+GPU 0: Found a share of difficulty 3.1k
+GPU 0: Share accepted (17 ms) 
+New job received: 1255032 Difficulty: 1024 
+Average speed (30s): 31.8 sol/s 
+GPU 0: Found a share of difficulty 1.1k
+GPU 0: Share accepted (17 ms) 
+New job received: 1255033 Difficulty: 1024 
+Average speed (30s): 34.5 sol/s 
+--------------------------------------------- 
+Statistics (09:49:43); Mining: BeamHash III 
+Connected to: beam.sunpool.top:3334 
+Uptime: 0h 17m 31s 
+                         GPU 0    Total
+Speed (sol/s):            32.7     32.7
+Best Share:             126.6K   126.6K
+Shares (A/S/R):         36/0/0   36/0/0
+Power (W):               169.0    169.0
+Efficiency (sol/s/W):    0.193    0.194
+Temp (deg C):               74         
+Junction (deg C):           83         
+Memory (deg C):             80         
+Fan Speed (%):              49         
+--------------------------------------------- 
+Average speed (30s): 32.0 sol/s 
+GPU 0: Found a share of difficulty 1.0k
+GPU 0: Share accepted (17 ms) 
+Average speed (30s): 33.7 sol/s 
+New job received: 1255040 Difficulty: 1024 
+Average speed (30s): 32.6 sol/s 
+New job received: 1255041 Difficulty: 1024 
+Average speed (30s): 32.4 sol/s 
+GPU 0: Found a share of difficulty 2.0k
+GPU 0: Share accepted (17 ms) 
+GPU 0: Found a share of difficulty 4.6k
+GPU 0: Share accepted (16 ms) 
+Average speed (30s): 34.2 sol/s 
+GPU 0: Found a share of difficulty 1.2k
+GPU 0: Share accepted (17 ms) 
+New job received: 1255042 Difficulty: 1024 
+New job received: 1255043 Difficulty: 1024 
+New job received: 1255044 Difficulty: 1024 
+--------------------------------------------- 
+Statistics (09:52:13); Mining: BeamHash III 
+Connected to: beam.sunpool.top:3334 
+Uptime: 0h 20m 1s 
+                         GPU 0    Total
+Speed (sol/s):            33.3     33.3
+Best Share:             126.6K   126.6K
+Shares (A/S/R):         40/0/0   40/0/0
+Power (W):               175.0    175.0
+Efficiency (sol/s/W):    0.190    0.190
+Temp (deg C):               74         
+Junction (deg C):           84         
+Memory (deg C):             80         
+Fan Speed (%):              49         
+--------------------------------------------- 
+Average speed (30s): 33.4 sol/s 
+GPU 0: Found a share of difficulty 1.4k
+GPU 0: Share accepted (17 ms) 
+GPU 0: Found a share of difficulty 7.4k
+GPU 0: Share accepted (18 ms) 
+Average speed (30s): 33.5 sol/s 
+GPU 0: Found a share of difficulty 1.2k
+GPU 0: Share accepted (17 ms) 
+GPU 0: Found a share of difficulty 1.9k
+GPU 0: Share accepted (16 ms) 
+Average speed (30s): 30.7 sol/s 
+Average speed (30s): 33.1 sol/s 
+Average speed (30s): 33.4 sol/s 
+New job received: 1255045 Difficulty: 1024 
+--------------------------------------------- 
+Statistics (09:54:43); Mining: BeamHash III 
+Connected to: beam.sunpool.top:3334 
+Uptime: 0h 22m 31s 
+                         GPU 0    Total
+Speed (sol/s):            32.4     32.4
+Best Share:             126.6K   126.6K
+Shares (A/S/R):         44/0/0   44/0/0
+Power (W):               185.1    185.1
+Efficiency (sol/s/W):    0.175    0.175
+Temp (deg C):               74         
+Junction (deg C):           84         
+Memory (deg C):             80         
+Fan Speed (%):              48         
+--------------------------------------------- 
+Average speed (30s): 31.2 sol/s 

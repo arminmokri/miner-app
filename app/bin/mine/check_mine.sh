@@ -15,4 +15,14 @@ proc_id=$(eval "pgrep -f $miner_module_name | head -n 1")
 if ! [ $proc_id > 0 ]
 then
    eval "$mine_path 'no proc id'"
+else
+   for i in ${!miner_module_crash_list[@]}
+   do
+      crash=${miner_module_crash_list[$i]}
+      if [ "$(eval "tail -n30 $mining_log_path | grep '$crash' | wc -l")" -gt "0" ]
+      then
+         eval "$mine_path 'crash/key=\"$crash\"'"
+         break
+      fi
+   done
 fi

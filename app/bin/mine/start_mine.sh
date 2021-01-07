@@ -11,6 +11,9 @@ claymore_path="$app_dir_path/bin/claymore/ethdcrminer64"
 ### ethminer path
 ethminer_path="$app_dir_path/bin/ethminer/ethminer"
 
+### lolminer path
+lolminer_path="$app_dir_path/bin/lolminer/lolMiner"
+
 ### use tor network
 tor_socks=""
 if [ "$use_tor_network_for_mine" == "1" ]
@@ -50,6 +53,10 @@ then
    then
       $tor_socks $ethminer_path \
       -P stratum1+tcp://$pool_wallet_id@$pool_url/$workername/$pool_email
+   elif [ "$miner" == "lolminer" ] ### lolminer
+   then
+      $tor_socks $lolminer_path \
+      --algo ETHASH --pool $pool_url --user $pool_wallet_id.$workername $@
    fi
 elif [ "$pool" == "miningpoolhub.com" ] ### miningpoolhub.com
 then
@@ -83,6 +90,11 @@ then
    then
       $tor_socks $ethminer_path \
       -P stratum2+tcp://$pool_username%2e$workername:x@$pool_url
+   elif [ "$miner" == "lolminer" ] ### lolminer
+   then
+      $tor_socks $lolminer_path \
+      --algo ETHASH --pool $pool_url --user $pool_username.$workername $@
+   fi
    fi
 elif [ "$pool" == "ethermine.org" ] ### ethermine.org
 then
@@ -115,5 +127,9 @@ then
    then
       $tor_socks $ethminer_path \
       -P stratum1+tcp://$pool_wallet_id.$workername@$pool_url
+   elif [ "$miner" == "lolminer" ] ### lolminer
+   then
+      $tor_socks $lolminer_path \
+      --algo ETHASH --pool $pool_url --user $pool_wallet_id.$workername $@
    fi
 fi

@@ -37,7 +37,7 @@ if (isset($_SESSION['logged_in_user'])) {
 		if ($_POST['action'] == "reboot_system") {
 			$app_dir_path = GetConfigVariable("app_dir_path");
 			$reboot_path = "$app_dir_path/bin/reboot/reboot.sh";
-			shell_exec("sudo $reboot_path");
+			shell_exec("sudo $reboot_path 'web'");
 		} elseif ($_POST['action'] == "restart_mining") {
 			$app_dir_path = GetConfigVariable("app_dir_path");
 			$mine_path = "$app_dir_path/bin/mine/mine.sh";

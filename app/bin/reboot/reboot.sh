@@ -11,6 +11,20 @@ reboot_normal_path="$app_dir_path/bin/reboot/reboot_normal.sh"
 ### reboot force path
 reboot_force_path="$app_dir_path/bin/reboot/reboot_force.sh"
 
+### get datetime
+datetime_res=$(eval $datetime_path)
+
+###
+caller_proc=""
+if [ $# -eq 1 ]
+then
+   caller_proc=$1
+else
+   caller_proc="manual"
+fi
+
+echo "$datetime_res | Reboot | $caller_proc" >> $mine_log_path
+
 ### sync
 sync
 sleep 3

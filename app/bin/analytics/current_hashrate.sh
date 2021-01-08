@@ -93,7 +93,7 @@ else
       then
          echo "0" > $current_hashrate_zero_counter_path
          sleep 1
-         $reboot_path
+         $reboot_path "current hashrate (hashrate $current_hashrate_zero_counter times was zero)"
       else
          echo "$current_hashrate_zero_counter" > $current_hashrate_zero_counter_path
       fi

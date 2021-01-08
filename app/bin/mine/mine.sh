@@ -36,7 +36,7 @@ fi
 pid_file="/tmp/mine.sh.pid"
 if [ -f $pid_file ]
 then
-   echo "$datetime_res | Restart Mine | failed to restart mine ($caller_proc)" >> $mine_log_path
+   echo "$datetime_res | Miner | $caller_proc | failed" >> $mine_log_path
    exit
 fi
 trap "rm $pid_file 2>/dev/null" EXIT
@@ -59,4 +59,4 @@ $overclock_path 2> $overclock_log_path
 $start_mine_path 1> $mining_log_path 2> $mining_log_path &
 
 ###
-echo "$datetime_res | Restart Mine | $caller_proc" >> $mine_log_path
+echo "$datetime_res | Miner | $caller_proc | successed" >> $mine_log_path

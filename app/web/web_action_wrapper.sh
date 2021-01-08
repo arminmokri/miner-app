@@ -11,9 +11,9 @@ reboot_path="$app_dir_path/bin/reboot/reboot.sh"
 ### mine path
 mine_path="$app_dir_path/bin/mine/mine.sh"
 
-if [ -f $web_pipe_file ]
+if [ -f $web_pipe_file_path ]
 then
-   action=$(eval "cat $web_pipe_file")
+   action=$(eval "cat $web_pipe_file_path")
    if [ "$action" == "reboot_system" ] ### reboot_system
    then
       $reboot_path 'web'
@@ -21,5 +21,5 @@ then
    then
       $mine_path 'web'
    fi
-   rm $web_pipe_file
+   rm $web_pipe_file_path
 fi

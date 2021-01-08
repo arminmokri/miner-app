@@ -39,8 +39,10 @@ if (isset($_SESSION['logged_in_user'])) {
 			$action == "reboot_system" ||
 			$action == "restart_mining"
 		) {
-			$web_pipe_file = GetConfigVariable("web_pipe_file");
-			shell_exec("echo {$action} > {$web_pipe_file}");
+			$web_pipe_file_path = GetConfigVariable("web_pipe_file_path");
+			$web_pipe_file = fopen($web_pipe_file_path, "w");
+			fwrite($web_pipe_file, $action);
+			fclose($web_pipe_file);
 		} else {
 			print "No Action";
 			exit;

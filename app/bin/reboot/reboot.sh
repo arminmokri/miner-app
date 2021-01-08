@@ -5,6 +5,9 @@ this_file_path=$(eval "realpath $0")
 this_dir_path=$(eval "dirname $this_file_path")
 source "$this_dir_path/../../../config/main.conf"
 
+### datetime path
+datetime_path="$app_dir_path/bin/datetime.sh"
+
 ### reboot normal path
 reboot_normal_path="$app_dir_path/bin/reboot/reboot_normal.sh"
 

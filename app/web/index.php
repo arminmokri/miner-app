@@ -34,14 +34,13 @@ if (isset($_SESSION['logged_in_user'])) {
 
 	### Handle Actions
 	if (isset($_POST['action'])) {
-		if ($_POST['action'] == "reboot_system") {
-			$app_dir_path = GetConfigVariable("app_dir_path");
-			$reboot_path = "$app_dir_path/bin/reboot/reboot.sh";
-			shell_exec("sudo $reboot_path 'web'");
-		} elseif ($_POST['action'] == "restart_mining") {
-			$app_dir_path = GetConfigVariable("app_dir_path");
-			$mine_path = "$app_dir_path/bin/mine/mine.sh";
-			shell_exec("sudo $mine_path 'web'");
+		$action = $_POST['action'];
+		if (
+			$action == "reboot_system" ||
+			$action == "restart_mining"
+		) {
+			$web_pipe_file = GetConfigVariable("web_pipe_file");
+			shell_exec("echo {$action} > {$web_pipe_file}");
 		} else {
 			print "No Action";
 			exit;

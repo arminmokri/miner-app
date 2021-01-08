@@ -45,6 +45,9 @@ log_dir_path="$mine_dir_path/log"
 ### network
 @reboot eval "$app_dir_path/bin/network/check_network.sh"
 
+### web
+* * * * * eval "$app_dir_path/web/web_action_wrapper.sh"
+
 ### reboot
 6 0 * * * eval "$app_dir_path/bin/reboot/reboot.sh"
 #6 6 * * * eval "$app_dir_path/bin/reboot/reboot.sh"

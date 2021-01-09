@@ -34,7 +34,7 @@ do
          let ping_counter=ping_counter+1
          string="$string to $ping_counter"
          echo $string
-         $string=""
+         string=""
          ###
          ping_counter=0
       fi
@@ -64,7 +64,7 @@ do
          ###
          string="$string to 50"
          echo $string
-         $string=""
+         string=""
          ###
          eval $send_reboot_cmd_to_modem_path
          datetime_res=$(eval $datetime_path)

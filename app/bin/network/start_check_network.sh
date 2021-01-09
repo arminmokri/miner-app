@@ -24,33 +24,46 @@ do
    ### pings
    ping_res1=$(eval $ping_path1)
    ping_res2=$(eval $ping_path2)
-   if [ "$ping_res1" -eq "0" ] || [ "$ping_res2" -eq "0" ]; then
-      ###
-      if [ "$network_dis" -eq "1" ]
-	  then
-         network_dis=0
-         datetime_res=$(eval $datetime_path)
-         echo "$datetime_res | CHECK_MODEM | Network Normal."
-      fi
+   if [ "$ping_res1" -eq "0" ] || [ "$ping_res2" -eq "0" ] ### Internet Access
+   then
       ###
       if [ "$ping_counter" -gt "0" ]
-	  then
+      then
+         let ping_counter=ping_counter+1
+         echo -n " to $ping_counter"
          ping_counter=0
       fi
-   else
+      ###
+      if [ "$network_dis" -eq "1" ]
+      then
+         datetime_res=$(eval $datetime_path)
+         echo
+         echo "$datetime_res | Network | Internet Access | Successed"
+         network_dis=0
+      fi
+   else ### No Internet Access
       let ping_counter=ping_counter+1
       network_dis=1
-      datetime_res=$(eval $datetime_path)
-      echo "$datetime_res | CHECK_MODEM | No Network Access Try($ping_counter)."
-   fi
-   ###
-   if [ "$ping_counter" -ge "50" ]
-   then
-      eval $send_reboot_cmd_to_modem_path
-      datetime_res=$(eval $datetime_path)
-      echo "$datetime_res | CHECK_MODEM | Reboot Modem."
-      ping_counter=0
-      sleep 120
+      ###
+      if [ "$ping_counter" -eq "1" ] ### ping_counter = 1
+      then
+         datetime_res=$(eval $datetime_path)
+         echo -n "$datetime_res | Network | Internet Access | Failed from 1 "
+      elif [ "$ping_counter" -gt "1" ] &&  [ "$ping_counter" -lt "50" ] ### 1 < ping_counter < 50
+      then
+         echo -n "."
+      elif [ "$ping_counter" -eq "50" ] ### ping_counter = 50
+      then
+         ###
+         echo -n " to 50"
+         ###
+         eval $send_reboot_cmd_to_modem_path
+         datetime_res=$(eval $datetime_path)
+         echo
+         echo "$datetime_res | Network | Reboot Modem | Successed"
+         ping_counter=0
+         sleep 120
+      fi
    fi
    ###
    sleep 1

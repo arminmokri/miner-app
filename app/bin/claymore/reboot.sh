@@ -10,8 +10,9 @@ reboot_path="$app_dir_path/bin/reboot/reboot.sh"
 
 ### reboot
 uptime_in_minute=$(eval "echo $(awk '{print $1}' /proc/uptime) / 60 | bc")
-if [ "$uptime_in_minute" -ge "$claymore_reboot_uptime" ]
+if [ "$uptime_in_minute" -ge "$miner_module_reboot_uptime" ]
 then
    ### run reboot
-   $reboot_path 'claymore (reboot.sh file)'
+   this_file_name=$(eval "basename $this_file_path")
+   $reboot_path "$miner ($this_file_name file)"
 fi

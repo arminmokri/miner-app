@@ -28,17 +28,22 @@ do
    if [ "$ping_res1" -eq "0" ] || [ "$ping_res2" -eq "0" ] ### Internet Access
    then
       ###
-      if [ "$network_dis" -eq "1" ] || [ "$ping_counter" -gt "0" ]
+      if [ "$ping_counter" -gt "0" ]
       then
          ###
          let ping_counter=ping_counter+1
          string="$string to $ping_counter"
          echo $string
+         $string=""
          ###
+         ping_counter=0
+      fi
+      ###
+      if [ "$network_dis" -eq "1" ]
+      then
          datetime_res=$(eval $datetime_path)
          echo "$datetime_res | Network | Internet Access | Successed"
          ###
-         ping_counter=0
          network_dis=0
       fi
    else ### No Internet Access
@@ -59,6 +64,7 @@ do
          ###
          string="$string to 50"
          echo $string
+         $string=""
          ###
          eval $send_reboot_cmd_to_modem_path
          datetime_res=$(eval $datetime_path)

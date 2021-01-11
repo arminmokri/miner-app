@@ -22,10 +22,10 @@ then
    then
       if [ "$miner_module_proc_id_action" == "restart_mining" ]
       then
-         eval "$mine_path 'proc id checker'"
+         $mine_path "proc id checker"
       elif [ "$miner_module_proc_id_action" == "reboot_system" ]
       then
-         eval "$reboot_path 'proc id checker'"
+         $reboot_path "proc id checker"
       fi
    else
       for i in ${!miner_module_crash_list[@]}
@@ -35,10 +35,10 @@ then
          then
             if [ "$miner_module_crash_action" == "restart_mining" ]
             then
-               eval "$mine_path 'crash checker (key='$crash')'"
+               $mine_path "crash checker (key='$crash')"
             elif [ "$miner_module_crash_action" == "reboot_system" ]
             then
-               eval "$reboot_path 'crash checker (key='$crash')'"
+               $reboot_path "crash checker (key='$crash')"
             fi
             break
          fi

@@ -33,7 +33,7 @@ else
    reboot_type=$default_reboot_type 
 fi
 
-echo "$datetime_res | Reboot | $caller_proc | Successed" >> $mine_log_path
+echo "$datetime_res | Reboot | $caller_proc | $reboot_type | Successed" >> $mine_log_path
 
 ### sync
 sync

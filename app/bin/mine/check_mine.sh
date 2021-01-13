@@ -23,9 +23,10 @@ then
       if [ "$miner_module_proc_id_action" == "restart_mining" ]
       then
          $mine_path "proc id checker"
-      elif [ "$miner_module_proc_id_action" == "reboot_system" ]
+      elif [[ "$miner_module_proc_id_action" == "reboot_system"* ]]
       then
-         $reboot_path "proc id checker"
+         reboot_type=$(eval "echo $miner_module_proc_id_action | cut -d '/' -f 2")
+         $reboot_path "proc id checker" "$reboot_type"
       fi
    else
       for i in ${!miner_module_crash_list[@]}
@@ -36,9 +37,10 @@ then
             if [ "$miner_module_crash_action" == "restart_mining" ]
             then
                $mine_path "crash checker (key='$crash')"
-            elif [ "$miner_module_crash_action" == "reboot_system" ]
+            elif [[ "$miner_module_crash_action" == "reboot_system"* ]]
             then
-               $reboot_path "crash checker (key='$crash')"
+               reboot_type=$(eval "echo $miner_module_crash_action | cut -d '/' -f 2")
+               $reboot_path "crash checker (key='$crash')" "$reboot_type"
             fi
             break
          fi

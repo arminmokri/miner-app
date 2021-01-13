@@ -25,8 +25,9 @@ then
    if [ "$miner_module_reboot_file_action" == "restart_mining" ]
    then
       $mine_path "$miner ($this_file_name file)"
-   elif [ "$miner_module_reboot_file_action" == "reboot_system" ]
+   elif [[ "$miner_module_reboot_file_action" == "reboot_system"* ]]
    then
-      $reboot_path "$miner ($this_file_name file)"
+      reboot_type=$(eval "echo $miner_module_reboot_file_action | cut -d '/' -f 2")
+      $reboot_path "$miner ($this_file_name file)" "$reboot_type"
    fi
 fi

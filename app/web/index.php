@@ -36,7 +36,7 @@ if (isset($_SESSION['logged_in_user'])) {
 	if (isset($_POST['action'])) {
 		$action = $_POST['action'];
 		if (
-			$action == "reboot_system" ||
+			str_contains($action, "reboot_system") ||
 			$action == "restart_mining"
 		) {
 			$web_pipe_file_path = GetConfigVariable("web_pipe_file_path");
@@ -199,8 +199,14 @@ if (isset($_SESSION['logged_in_user'])) {
 								</div>
 								<div class="btn-group">
 									<form method="post" action="./">
-										<input type="hidden" name="action" value="reboot_system" />
-										<input type="submit" class="btn btn-danger" value="Reboot System" onclick="return confirm('Are you sure?')">
+										<input type="hidden" name="action" value="reboot_system/normal" />
+										<input type="submit" class="btn btn-danger" value="Reboot System(Normal)" onclick="return confirm('Are you sure?')">
+									</form>
+								</div>
+								<div class="btn-group">
+									<form method="post" action="./">
+										<input type="hidden" name="action" value="reboot_system/force" />
+										<input type="submit" class="btn btn-danger" value="Reboot System(Force)" onclick="return confirm('Are you sure?')">
 									</form>
 								</div>
 								<div class="btn-group">

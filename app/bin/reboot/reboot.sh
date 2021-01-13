@@ -19,11 +19,18 @@ datetime_res=$(eval $datetime_path)
 
 ###
 caller_proc=""
-if [ $# -eq 1 ]
+reboot_type=""
+if [ $# -eq 2 ]
 then
    caller_proc=$1
+   caller_reboot_type=$2
+elif [ $# -eq 1 ]
+then
+   caller_proc=$1
+   reboot_type=$default_reboot_type
 else
    caller_proc="manual"
+   reboot_type=$default_reboot_type 
 fi
 
 echo "$datetime_res | Reboot | $caller_proc | Successed" >> $mine_log_path

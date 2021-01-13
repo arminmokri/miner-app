@@ -15,11 +15,12 @@ if [ -f $web_pipe_file_path ]
 then
    action=$(eval "cat $web_pipe_file_path")
    rm $web_pipe_file_path
-   if [ "$action" == "reboot_system" ] ### reboot_system
+   if [[ "$action" == "reboot_system"* ]] ### reboot_system
    then
-      $reboot_path 'web'
+      reboot_type=$(eval "echo $action | cut -d '/' -f 2")
+      $reboot_path "web" "$reboot_type"
    elif [ "$pool" == "restart_mining" ] ### restart_mining
    then
-      $mine_path 'web'
+      $mine_path "web"
    fi
 fi

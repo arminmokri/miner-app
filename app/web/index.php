@@ -75,6 +75,7 @@ if (isset($_SESSION['logged_in_user'])) {
 	$number_of_days = shell_exec("wc -l {$balance_log_path} | awk {'print $1'} | tr -d '\n'");
 	$number_of_cards = shell_exec("ls /sys/class/drm/ | egrep 'card[0-9]$' | wc -l | tr -d '\n'");
 	$uptime = shell_exec("uptime -p | cut -d ' ' -f 2- | tr -d '\n'");
+	$datetime = shell_exec("date '+%Y/%m/%d %H:%M:%S' | tr -d '\n'");
 
 	### get total balance from pool
 	$total_balance = 0;
@@ -195,6 +196,9 @@ if (isset($_SESSION['logged_in_user'])) {
 						<div class="panel panel-default">
 							<div class="panel-heading">Quick Access</div>
 							<div class="panel-body">
+								<div class="alert alert-info">
+									<strong>Time: <?= $datetime ?></strong>
+								</div>
 								<div class="alert alert-info">
 									<strong>Uptime: <?= $uptime ?></strong>
 								</div>

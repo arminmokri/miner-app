@@ -9,3 +9,4 @@ source "$this_dir_path/../../../config/main.conf"
 killall -9 $miner_module_name
 sleep 1
 pgrep -f $miner_module_name | xargs kill -9
+sleep 1

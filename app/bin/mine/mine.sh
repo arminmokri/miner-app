@@ -44,19 +44,19 @@ echo $$ > $pid_file
 
 ### Stop
 $stop_mine_path
-sleep 2
 
-### cp
-cp $mining_log_path $mining_old_log_path
+### mv
+mv $mining_log_path $mining_old_log_path
 
 ### run gpu global vars
 $gpu_global_vars_path 2> $gpu_global_vars_log_path
 
-### run overclock
-$overclock_path 2> $overclock_log_path
-
 ### Start
 $start_mine_path 1> $mining_log_path 2> $mining_log_path &
+sleep 5
+
+### run overclock
+$overclock_path 2> $overclock_log_path
 
 ###
 echo "$datetime_res | Miner | $caller_proc | Successed" >> $mine_log_path

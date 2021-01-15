@@ -76,6 +76,27 @@ if (isset($_SESSION['logged_in_user'])) {
 	$number_of_cards = shell_exec("ls /sys/class/drm/ | egrep 'card[0-9]$' | wc -l | tr -d '\n'");
 	$uptime = shell_exec("uptime -p | cut -d ' ' -f 2- | tr -d '\n'");
 	$datetime = shell_exec("date '+%Y/%m/%d %H:%M:%S' | tr -d '\n'");
+	$date = shell_exec("date '+%Y/%m/%d' | tr -d '\n'");
+	$number_of_current_hashrate = shell_exec("grep -c '{$date}' {$current_hashrate_log_path} | tr -d '\n'");
+	$last24h_uptime = ($number_of_current_hashrate * 5);
+	$last24h_uptime_in_hour = intval($last24h_uptime / 60);
+	$last24h_uptime_in_minute = intval($last24h_uptime % 60);
+	$last24h_uptime_text = "";
+	if ($last24h_uptime_in_hour != 0) {
+		$last24h_uptime_text .= "${last24h_uptime_in_hour} hour";
+		if ($last24h_uptime_in_hour > 1) {
+			$last24h_uptime_text .= "s";
+		}
+	}
+	if ($last24h_uptime_in_minute != 0) {
+		$last24h_uptime_text .= ", ${last24h_uptime_in_minute} minute";
+		if ($last24h_uptime_in_minute > 1) {
+			$last24h_uptime_text .= "s";
+		}
+	}
+	if ($last24h_uptime_in_hour == 0 && $last24h_uptime_in_minute == 0) {
+		$last24h_uptime_text .= "less then 5 minutes";
+	}
 
 	### get total balance from pool
 	$total_balance = 0;
@@ -201,6 +222,9 @@ if (isset($_SESSION['logged_in_user'])) {
 								</div>
 								<div class="alert alert-info">
 									<strong>Uptime: <?= $uptime ?></strong>
+								</div>
+								<div class="alert alert-info">
+									<strong>Last 24 Hours Uptime: <?= $last24h_uptime_text ?></strong>
 								</div>
 								<div class="alert alert-info">
 									<strong><?= $number_of_cards ?> GPUs</strong>

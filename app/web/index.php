@@ -88,8 +88,11 @@ if (isset($_SESSION['logged_in_user'])) {
 			$last24h_uptime_text .= "s";
 		}
 	}
+	if ($last24h_uptime_in_hour != 0 && $last24h_uptime_in_minute != 0) {
+		$last24h_uptime_text .= ", ";
+	}
 	if ($last24h_uptime_in_minute != 0) {
-		$last24h_uptime_text .= ", ${last24h_uptime_in_minute} minute";
+		$last24h_uptime_text .= "${last24h_uptime_in_minute} minute";
 		if ($last24h_uptime_in_minute > 1) {
 			$last24h_uptime_text .= "s";
 		}

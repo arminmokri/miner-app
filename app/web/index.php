@@ -36,7 +36,7 @@ if (isset($_SESSION['logged_in_user'])) {
 	if (isset($_POST['action'])) {
 		$action = $_POST['action'];
 		if (
-			str_contains($action, "reboot_system") ||
+			strpos($action, "reboot_system") !== false ||
 			$action == "restart_mining"
 		) {
 			$web_pipe_file_path = GetConfigVariable("web_pipe_file_path");

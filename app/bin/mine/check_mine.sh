@@ -32,7 +32,7 @@ then
       for i in ${!miner_module_crash_list[@]}
       do
          crash=${miner_module_crash_list[$i]}
-         if [ "$(eval "tail -n30 $mining_log_path | grep '$crash' | wc -l")" -gt "0" ]
+         if [ "$(eval "tail -n $miner_module_crash_search_lines $mining_log_path | grep '$crash' | wc -l")" -gt "0" ]
          then
             if [ "$miner_module_crash_action" == "restart_mining" ]
             then

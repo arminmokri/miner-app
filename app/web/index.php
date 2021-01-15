@@ -78,6 +78,9 @@ if (isset($_SESSION['logged_in_user'])) {
 	$datetime = shell_exec("date '+%Y/%m/%d %H:%M:%S' | tr -d '\n'");
 	$date = shell_exec("date '+%Y/%m/%d' | tr -d '\n'");
 	$number_of_current_hashrate = shell_exec("grep -c '{$date}' {$current_hashrate_log_path} | tr -d '\n'");
+	if ($number_of_current_hashrate > 0) {
+		$number_of_current_hashrate--;
+	}
 	$last24h_uptime = ($number_of_current_hashrate * 5);
 	$last24h_uptime_in_hour = intval($last24h_uptime / 60);
 	$last24h_uptime_in_minute = intval($last24h_uptime % 60);

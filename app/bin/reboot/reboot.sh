@@ -23,7 +23,7 @@ reboot_type=""
 if [ $# -eq 2 ]
 then
    caller_proc=$1
-   caller_reboot_type=$2
+   reboot_type=$2
 elif [ $# -eq 1 ]
 then
    caller_proc=$1

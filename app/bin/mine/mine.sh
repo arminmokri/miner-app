@@ -53,7 +53,7 @@ $gpu_global_vars_path 2> $gpu_global_vars_log_path
 
 ### Start
 $start_mine_path 1> $mining_log_path 2> $mining_log_path &
-sleep 60
+sleep 120
 
 ### run overclock
 $overclock_path 2> $overclock_log_path

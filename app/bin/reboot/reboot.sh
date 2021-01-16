@@ -42,8 +42,8 @@ sleep 3
 ### reboot
 if [ "$reboot_type" == "normal" ] ### normal reboot
 then
-   $reboot_normal_path
+   sudo $reboot_normal_path
 elif [ "$reboot_type" == "force" ] ### force reboot
 then
-   $reboot_force_path
+   sudo $reboot_force_path
 fi

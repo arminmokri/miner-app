@@ -14,6 +14,9 @@ datetime_res=$(eval $datetime_path)
 ### if achieve number of try times to get data, do exit
 datetime_sec=$(eval "date --date='$datetime_res' '+%S'")
 
+### mine path
+mine_path="$app_dir_path/bin/mine/mine.sh"
+
 ### reboot path
 reboot_path="$app_dir_path/bin/reboot/reboot.sh"
 
@@ -79,20 +82,34 @@ then
    echo "$datetime_res | Unavailable Data, Try($current_hashrate_log_try_times)" >> $current_hashrate_log_path
 else
    echo "$datetime_res | $current_hashrate Mh/s" >> $current_hashrate_log_path
-   uptime_in_minute=$(eval "echo $(awk '{print $1}' /proc/uptime) / 60 | bc")
-   if [ "$continuously_current_hashrate_times" != "0" ] && [ "$uptime_in_minute" -ge "$continuously_current_hashrate_uptime" ] && [ "$current_hashrate" == "0" ]
+   ###
+   if [ "$current_hashrate_continuously_zero_times" != "0" ] && [ "$current_hashrate" == "0" ]
    then
+      ### get current_hashrate_zero_counter
       if [ -e "$current_hashrate_zero_counter_path" ]
       then
          current_hashrate_zero_counter=$(eval "cat $current_hashrate_zero_counter_path")
       else
          current_hashrate_zero_counter=0
       fi
+      ### inc current_hashrate_zero_counter
       let current_hashrate_zero_counter=current_hashrate_zero_counter+1
-      if [ "$current_hashrate_zero_counter" -ge "$continuously_current_hashrate_times" ]
+
+      ### check action conditions
+      uptime_in_minute=$(eval "echo $(awk '{print $1}' /proc/uptime) / 60 | bc")
+      if [ "$current_hashrate_zero_counter" -ge "$current_hashrate_continuously_zero_times" ] && [ "$uptime_in_minute" -ge "$current_hashrate_continuously_zero_uptime" ]
       then
-         echo "0" > $current_hashrate_zero_counter_path
-         $reboot_path "current hashrate (hashrate $current_hashrate_zero_counter times was zero)"
+         ### do action restart_mining/reboot_system
+         if [ "$current_hashrate_continuously_zero_action" == "restart_mining" ]
+         then
+            echo "0" > $current_hashrate_zero_counter_path
+            $mine_path "current hashrate (hashrate $current_hashrate_zero_counter times was zero)"
+         elif [[ "$current_hashrate_continuously_zero_action" == "reboot_system"* ]]
+         then
+            echo "0" > $current_hashrate_zero_counter_path
+            reboot_type=$(eval "echo $current_hashrate_continuously_zero_action | cut -d '/' -f 2")
+            $reboot_path "current hashrate (hashrate $current_hashrate_zero_counter times was zero)" "$reboot_type"
+         fi
       else
          echo "$current_hashrate_zero_counter" > $current_hashrate_zero_counter_path
       fi

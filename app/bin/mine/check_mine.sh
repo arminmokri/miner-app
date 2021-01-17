@@ -16,7 +16,7 @@ proc_id=$(eval "pgrep -f $miner_module_name | head -n 1")
 
 ### call miner if no proc
 uptime_in_minute=$(eval "echo $(awk '{print $1}' /proc/uptime) / 60 | bc")
-if [ "$uptime_in_minute" -ge "$miner_module_reboot_uptime" ]
+if [ "$uptime_in_minute" -ge "$miner_module_action_uptime" ]
 then
    if ! [ $proc_id > 0 ]
    then

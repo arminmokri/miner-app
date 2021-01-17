@@ -62,6 +62,8 @@ if (isset($_SESSION['logged_in_user'])) {
 	$pool = GetConfigVariable("pool");
 	$web_title = GetConfigVariable("web_title");
 	$web_address = GetConfigVariable("web_address");
+	$current_year = date("Y");
+	$version = GetConfigVariable("version");
 
 	### get system logs
 	$current_hashrate = shell_exec("tail -n 288 {$current_hashrate_log_path} | tac");
@@ -320,7 +322,7 @@ if (isset($_SESSION['logged_in_user'])) {
 			<div class="container-fluid">
 				<div class="text-center">
 					<p style="color: #fff;">
-						Copyright &#9400; 2019 Armin Mokri
+						Copyright &#9400; 2019 to <?= $current_year ?> Armin Mokri&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Version <?= $version ?>
 					</p>
 				</div>
 			</div>

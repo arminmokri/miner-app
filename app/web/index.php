@@ -188,7 +188,7 @@ if (isset($_SESSION['logged_in_user'])) {
 			}
 
 			.footer {
-				height: 60px;
+				height: 80px;
 				background-color: #101010;
 				padding-top: 20px;
 			}
@@ -322,7 +322,10 @@ if (isset($_SESSION['logged_in_user'])) {
 			<div class="container-fluid">
 				<div class="text-center">
 					<p style="color: #fff;">
-						Copyright &#9400; 2019 to <?= $current_year ?> Armin Mokri&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Version <?= $version ?>
+						Copyright &#9400; 2019 to <?= $current_year ?> Armin Mokri
+					</p>
+					<p style="color: #fff;">
+						Version <?= $version ?>
 					</p>
 				</div>
 			</div>
